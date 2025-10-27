@@ -12,3 +12,6 @@ C:\c#\obj\Debug\net8.0\refint\c#.dll
 C:\c#\obj\Debug\net8.0\c#.pdb
 C:\c#\obj\Debug\net8.0\c#.genruntimeconfig.cache
 C:\c#\obj\Debug\net8.0\ref\c#.dll
+C:\c#\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\c#\obj\Debug\net8.0\c#.csproj.AssemblyReference.cache
+C:\c#\obj\Debug\net8.0\c#.csproj.Up2Date
