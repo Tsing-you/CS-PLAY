@@ -46,14 +46,14 @@ class SnakeGame
     // 游戏区域大小
     const int Width = 20;
     const int Height = 20;
-    
+
     // 游戏元素
     List<Point> snake;
     Point food;
     Point direction;
     bool gameOver;
     int score;
-    
+
     // 智谱AI API密钥 (请替换为您自己的API密钥)
     private const string API_KEY = "62aca7a83e7a40308d2f4f51516884bc.J91FkaxCor4k3sDk";
     private static readonly HttpClient client = new HttpClient();
@@ -63,7 +63,7 @@ class SnakeGame
         Console.WriteLine("欢迎来到贪吃蛇游戏！");
         Console.WriteLine("使用WASD控制方向，按任意键开始游戏...");
         Console.ReadKey();
-        
+
         var game = new SnakeGame();
         game.StartGame();
     }
@@ -88,10 +88,10 @@ class SnakeGame
 
         // 初始移动方向向右
         direction = new Point(1, 0);
-        
+
         // 生成食物
         GenerateFood();
-        
+
         gameOver = false;
         score = 0;
     }
@@ -103,13 +103,13 @@ class SnakeGame
         {
             // 处理用户输入
             HandleInput();
-            
+
             // 更新游戏状态
             Update();
-            
+
             // 绘制游戏画面
             Draw();
-            
+
             // 控制游戏速度
             System.Threading.Thread.Sleep(200);
         }
@@ -185,16 +185,16 @@ class SnakeGame
     {
         var random = new Random();
         Point newFood;
-        
+
         do
         {
             newFood = new Point(
                 random.Next(0, Width),
                 random.Next(0, Height)
             );
-        } 
+        }
         while (snake.Exists(segment => segment.X == newFood.X && segment.Y == newFood.Y));
-        
+
         food = newFood;
     }
 
@@ -203,10 +203,10 @@ class SnakeGame
     {
         // 清屏
         Console.Clear();
-        
+
         // 创建游戏画布
         char[,] grid = new char[Height, Width];
-        
+
         // 初始化为空格
         for (int y = 0; y < Height; y++)
         {
@@ -215,7 +215,7 @@ class SnakeGame
                 grid[y, x] = ' ';
             }
         }
-        
+
         // 绘制蛇身
         for (int i = 0; i < snake.Count; i++)
         {
@@ -223,10 +223,10 @@ class SnakeGame
             // 蛇头用特殊符号
             grid[segment.Y, segment.X] = (i == 0) ? 'O' : 'o';
         }
-        
+
         // 绘制食物
         grid[food.Y, food.X] = '@';
-        
+
         // 绘制边界和游戏画面
         Console.WriteLine("+" + new string('-', Width) + "+");
         for (int y = 0; y < Height; y++)
@@ -239,7 +239,7 @@ class SnakeGame
             Console.WriteLine("|");
         }
         Console.WriteLine("+" + new string('-', Width) + "+");
-        
+
         // 显示分数
         Console.WriteLine($"分数: {score}  使用WASD控制方向");
     }
@@ -251,10 +251,10 @@ class SnakeGame
         Console.WriteLine("游戏结束!");
         Console.WriteLine($"最终得分: {score}");
         Console.WriteLine("正在连接智谱AI获取游戏技巧提示...");
-        
+
         // 调用智谱AI API获取游戏技巧
         GetAIGameTip().Wait();
-        
+
         Console.WriteLine("\n按任意键退出游戏...");
         Console.ReadKey();
     }
@@ -266,7 +266,7 @@ class SnakeGame
         {
             var messages = new List<ZhipuMessage>
             {
-                new ZhipuMessage { role = "user", content = "你是一个游戏专家，玩家刚刚玩完贪吃蛇游戏，得了" + score + "分。请根据他的分数给他一些游戏技巧建议，并鼓励他继续努力。要求极其简短，以下所有回答都在100字以内" },
+                new ZhipuMessage { role = "user", content = "你是一个游戏专家，玩家刚刚玩完贪吃蛇游戏，每吃一个得10分，得了" + score + "分。请根据他的分数给他一些游戏技巧建议，并鼓励他继续努力。要求极其简短，以下所有回答都在100字以内" },
             };
 
             var request = new ZhipuRequest
@@ -276,10 +276,10 @@ class SnakeGame
 
             string json = JsonConvert.SerializeObject(request);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            
+
             // 添加认证头
             client.DefaultRequestHeaders.Clear();
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {62aca7a83e7a40308d2f4f51516884bc.J91FkaxCor4k3sDk}");
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {"62aca7a83e7a40308d2f4f51516884bc.J91FkaxCor4k3sDk"}");
 
             var response = await client.PostAsync("https://open.bigmodel.cn/api/paas/v4/chat/completions", content);
             var responseString = await response.Content.ReadAsStringAsync();
